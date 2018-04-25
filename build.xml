@@ -60,7 +60,7 @@ ant test -Dargs=filter=staticSync:all:ignore_expected
     <javac srcdir="src" destdir="${bin-dir}/agent" debug="${debug}"
       includeantruntime="false">
       <classpath>
-        <pathelement path="${deps-dir}/asm-3.2/lib/all/asm-all-3.2.jar"/>
+        <pathelement path="${deps-dir}/asm-5.2/lib/all/asm-all-5.2.jar"/>
       </classpath>
       <compilerarg value="-Xlint"/>
     </javac>
@@ -77,7 +77,7 @@ ant test -Dargs=filter=staticSync:all:ignore_expected
     <mkdir dir="${dist-dir}"/>
     <jar destfile="${agent-path}" manifest="manifest.mf">
       <fileset dir="${bin-dir}/agent"/>
-      <zipfileset src="${deps-dir}/asm-3.2/lib/all/asm-all-3.2.jar"/>
+      <zipfileset src="${deps-dir}/asm-5.2/lib/all/asm-all-5.2.jar"/>
     </jar>
     <jar basedir="${bin-dir}/tests" destfile="${tests-jar-path}">
       <manifest>
@@ -131,18 +131,18 @@ ant test -Dargs=filter=staticSync:all:ignore_expected
   <target name="download" description="download dependences from the internet">
     <mkdir dir="${deps-dir}"/>
     <get verbose="true" usetimestamp="true"
-         src="http://download.forge.objectweb.org/asm/asm-3.2-bin.zip"
-         dest="${deps-dir}/asm-3.2-bin.zip"/>
-    <checksum file="${deps-dir}/asm-3.2-bin.zip" property="asmMD5"/>
+         src="http://download.forge.objectweb.org/asm/asm-5.2-bin.zip"
+         dest="${deps-dir}/asm-5.2-bin.zip"/>
+    <checksum file="${deps-dir}/asm-5.2-bin.zip" property="asmMD5"/>
     <condition property="asmMD5ok" value="true">
-      <equals arg1="${asmMD5}" arg2="ad95824b9aedfa5b59b096b01f5c5921"/>
+      <equals arg1="${asmMD5}" arg2="1ab7a4c8e211a26074a10f2e14a2e367"/>
     </condition>
     <fail unless="asmMD5ok">
-File deps/asm-3.2-bin.zip has incorrect md5sum.
+File deps/asm-5.2-bin.zip has incorrect md5sum.
     </fail>
     <echo>Checksum verified.</echo>
-    <delete dir="${deps-dir}/asm-3.2"/>
-    <unzip src="${deps-dir}/asm-3.2-bin.zip" dest="${deps-dir}"/>
+    <delete dir="${deps-dir}/asm-5.2"/>
+    <unzip src="${deps-dir}/asm-5.2-bin.zip" dest="${deps-dir}"/>
     <get verbose="true" usetimestamp="true"
          src="https://data-race-test.googlecode.com/svn/trunk/tsan/ts_events.h"
          dest="${deps-dir}/ts_events.h"/>

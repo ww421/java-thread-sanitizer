@@ -20,7 +20,7 @@ import org.jtsan.writers.BinaryEventWriter;
 import org.jtsan.writers.EventWriter;
 import org.jtsan.writers.NoneEventWriter;
 import org.jtsan.writers.StringEventWriter;
-import org.objectweb.asm.ClassAdapter;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -28,6 +28,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 import org.objectweb.asm.util.TraceClassVisitor;
+import org.objectweb.asm.Attribute;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -220,7 +221,7 @@ public class Agent implements ClassFileTransformer {
         return bytes;
       }
 
-      ClassAdapter ca;
+      ClassVisitor ca;
       ClassReader cr = new ClassReader(bytes);
       ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
 
@@ -257,12 +258,12 @@ public class Agent implements ClassFileTransformer {
     }
   }
 
-  private ClassAdapter newMethodTransformAdapter(final Agent myself,
+  private ClassVisitor newMethodTransformAdapter(final Agent myself,
                                                  ClassWriter cw,
                                                  final String className,
                                                  final CodePos codePos,
                                                  final Set<String> volatiles) {
-    return new ClassAdapter(cw) {
+    return new ClassVisitor(Opcodes.ASM5, cw) {
       private String source;
 
       private final Set<String> volatileFields = volatiles;
@@ -310,7 +311,7 @@ public class Agent implements ClassFileTransformer {
   private void printTransformedClass(byte[] b) {
     ClassReader cr = new ClassReader(b);
     cr.accept(new TraceClassVisitor(new PrintWriter(System.out)),
-        TraceClassVisitor.getDefaultAttributes(),
+        new Attribute[0],
         0);
   }
 

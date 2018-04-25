@@ -88,7 +88,7 @@ public class MethodTransformer extends AdviceAdapter {
   public MethodTransformer(Agent agent, MethodVisitor mv,
       int acc, String name, String fullName, String desc, String src, String className,
       MethodMapping methods, CodePos codePos, Set<String> volatileFields) {
-    super(mv, acc, name, desc);
+    super(Opcodes.ASM5, mv, acc, name, desc);
     this.agent = agent;
     this.fullName = fullName;
     this.methods = methods;
